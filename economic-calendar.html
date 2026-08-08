@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Economic Calendar — Rates Desk</title>
+<meta name="theme-color" content="#0E1A2B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Econ Calendar">
+<link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEGElEQVR4nO3csW3bQACGUTlI7T7uApdeIPAAKbNApvAkniJFVvAAhgeIS8Ol10hhwDAk/dRJFHl35HtdYgeijp+O5InMxb+/vzawz5faG0C7xEEkDiJxEImDSBxE4iASB5E4iMRBdHF5dVN7G2iUmYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iL7W3oBWvD4/ff7j95sftbakHReXVze1t6G+rTLeHdvH8vJyWNlfxsDfF/7yUf+8TWuPY3gXFu7gs+TVIOccBzzeXw//wreffwZ++vr81O/xZdUzx8Edv3IrnTlkUWJdcVRp4v1Fb+9e5n/pkdYSR8ri7eH3wEnD28Pv825AX4ksZJ0jrTEUThV7+yg/kRy4KtmbVy+JLCGOvfvmqA/97d3LyCWsE7ah/US6j+PYT+2WM+6hrS0prLPlRPqO4+AqU9pDs+2SwuPa+/a0tgC/ujiqfFJLEhl53jOFtVyt1J293199IJF0xVR3gXX5cbRzUE+JNLsA32scRx3Lm3JwFmlHl9+tfIzs8BVB9RO6Abd3Lw2Gu6W/E9LCabnlMraUnFZXKamzmWPvbLw7f3RURqEqh6GeZo40QO3PzweVL+XN+Wa7mTkWXMYmT3W7k+KcU0gHM8fAcCyjjA9HLcDP8N5bj2M9ZSQVR6Dpw4oyNoPvdOpDTLszhzI+G+5gogFpNI5ln36ebOYPTIuHFWUkMx9impg5Ss7SlfGh/NvdkYuB9eMoucFOGbtm+Bqh8mElrQx+fp/K2GtrWAbuCDn5JWrOHM1+4dSXx/vr4TtCNqfOHy2ekH5QRonpRqnpOKhLHETiIKoWx+P9db83+bVmeKxOHsk6cRy8CVQZx0oj1vE6x2YdN/nNY3fcRo5khUcTdpf21HAu5x3JuWeO3TIsZjRr1jiU0Zf54ujiGS8+mymOvWWYNho3RxzK6NTkcSijX9PGoYyuTRiHMno3VRzKWIBJ4lDGMsx0KauMHp0/Dsugi3GGL96GnzpRRr/Gzhy7d5B7qmAxRsVR8tQJ/Tr9uZWDT524S6N39e8Eo1niIBIHkTiITo9jomclaMeomWOKZyVox9jDytmflaAd9f9nH5rlhJRIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIg+g+38EmiRYbJhgAAAABJRU5ErkJggg==">
+<link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAEGElEQVR4nO3csW3bQACGUTlI7T7uApdeIPAAKbNApvAkniJFVvAAhgeIS8Ol10hhwDAk/dRJFHl35HtdYgeijp+O5InMxb+/vzawz5faG0C7xEEkDiJxEImDSBxE4iASB5E4iMRBdHF5dVN7G2iUmYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iL7W3oBWvD4/ff7j95sftbakHReXVze1t6G+rTLeHdvH8vJyWNlfxsDfF/7yUf+8TWuPY3gXFu7gs+TVIOccBzzeXw//wreffwZ++vr81O/xZdUzx8Edv3IrnTlkUWJdcVRp4v1Fb+9e5n/pkdYSR8ri7eH3wEnD28Pv825AX4ksZJ0jrTEUThV7+yg/kRy4KtmbVy+JLCGOvfvmqA/97d3LyCWsE7ah/US6j+PYT+2WM+6hrS0prLPlRPqO4+AqU9pDs+2SwuPa+/a0tgC/ujiqfFJLEhl53jOFtVyt1J293199IJF0xVR3gXX5cbRzUE+JNLsA32scRx3Lm3JwFmlHl9+tfIzs8BVB9RO6Abd3Lw2Gu6W/E9LCabnlMraUnFZXKamzmWPvbLw7f3RURqEqh6GeZo40QO3PzweVL+XN+Wa7mTkWXMYmT3W7k+KcU0gHM8fAcCyjjA9HLcDP8N5bj2M9ZSQVR6Dpw4oyNoPvdOpDTLszhzI+G+5gogFpNI5ln36ebOYPTIuHFWUkMx9impg5Ss7SlfGh/NvdkYuB9eMoucFOGbtm+Bqh8mElrQx+fp/K2GtrWAbuCDn5JWrOHM1+4dSXx/vr4TtCNqfOHy2ekH5QRonpRqnpOKhLHETiIKoWx+P9db83+bVmeKxOHsk6cRy8CVQZx0oj1vE6x2YdN/nNY3fcRo5khUcTdpf21HAu5x3JuWeO3TIsZjRr1jiU0Zf54ujiGS8+mymOvWWYNho3RxzK6NTkcSijX9PGoYyuTRiHMno3VRzKWIBJ4lDGMsx0KauMHp0/Dsugi3GGL96GnzpRRr/Gzhy7d5B7qmAxRsVR8tQJ/Tr9uZWDT524S6N39e8Eo1niIBIHkTiITo9jomclaMeomWOKZyVox9jDytmflaAd9f9nH5rlhJRIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIgEgeROIjEQSQOInEQiYNIHETiIBIHkTiIxEEkDiJxEImDSBxE4iASB5E4iMRBJA4icRCJg0gcROIg+g+38EmiRYbJhgAAAABJRU5ErkJggg==">
+<link rel="manifest" href="data:application/manifest+json;base64,ewogICJuYW1lIjogIkVjb25vbWljIENhbGVuZGFyIiwKICAic2hvcnRfbmFtZSI6ICJFY29uIENhbGVuZGFyIiwKICAiZGVzY3JpcHRpb24iOiAiRmVkLCBCTFMsIEJFQSBhbmQgQ2Vuc3VzIHJlbGVhc2UgY2FsZW5kYXIgZm9yIG1hY3JvIGFuZCByYXRlcyB0cmFja2luZy4iLAogICJzdGFydF91cmwiOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImJhY2tncm91bmRfY29sb3IiOiAiIzBFMUEyQiIsCiAgInRoZW1lX2NvbG9yIjogIiMwRTFBMkIiLAogICJpY29ucyI6IFsKICAgIHsKICAgICAgInNyYyI6ICJkYXRhOmltYWdlL3BuZztiYXNlNjQsaVZCT1J3MEtHZ29BQUFBTlNVaEVVZ0FBQUxRQUFBQzBDQUlBQUFDeXI1RmxBQUFFR0VsRVFWUjRuTzNjc1czYlFBQ0dVVGxJN1Q3dUFwZGVJUEFBS2JOQXB2QWtuaUpGVnZBQWhnZUlTOE9sMTBoaHdEQWsvZFJKRkhsMzVIdGRZZ2VpanArTzVJbk14Yisvdnphd3o1ZmFHMEM3eEVFa0RpSnhFSW1EU0J4RTRpQVNCNUU0aU1SQmRIRjVkVk43RzJpVW1ZTklIRVRpSUJJSGtUaUl4RUVrRGlKeEVJbURTQnhFNGlBU0I1RTRpTVJCSkE0aWNSQ0pnMGdjUk9JZ0VnZVJPSWpFUVNRT0luRVFpWU5JSEVUaUlCSUhrVGlJeEVFa0RpSnhFSW1EU0J4RTRpQVNCNUU0aU1SQkpBNGljUkNKZzBnY1JPSWdFZ2VST0lqRVFTUU9JbkVRaVlOSUhFVGlJQklIa1RpSXhFRWtEaUp4RUltRFNCeEU0aUFTQjVFNGlMN1czb0JXdkQ0L2ZmN2o5NXNmdGJha0hSZVhWemUxdDZHK3JUTGVIZHZIOHZKeVdObGZ4c0RmRi83eVVmKzhUV3VQWTNnWEZ1N2dzK1RWSU9jY0J6emVYdy8vd3JlZmZ3WisrdnI4MU8veFpkVXp4OEVkdjNJcm5UbGtVV0pkY1ZScDR2MUZiKzllNW4vcGtkWVNSOHJpN2VIM3dFbkQyOFB2ODI1QVg0a3NaSjBqclRFVVRoVjcreWcva1J5NEt0bWJWeStKTENHT3Zmdm1xQS85N2QzTHlDV3NFN2FoL1VTNmorUFlUKzJXTSs2aHJTMHByTFBsUlBxTzQrQXFVOXBEcysyU3d1UGErL2EwdGdDL3VqaXFmRkpMRWhsNTNqT0Z0Vnl0MUoyOTMxOTlJSkYweFZSM2dYWDVjYlJ6VUUrSk5Mc0EzMnNjUngzTG0zSndGbWxIbDkrdGZJenM4QlZCOVJPNkFiZDNMdzJHdTZXL0U5TENhYm5sTXJhVW5GWlhLYW16bVdQdmJMdzdmM1JVUnFFcWg2R2VabzQwUU8zUHp3ZVZMK1hOK1dhN21Ua1dYTVltVDNXN2srS2NVMGdITThmQWNDeWpqQTlITGNEUDhONWJqMk05WlNRVlI2RHB3NG95Tm9QdmRPcERUTHN6aHpJK0crNWdvZ0ZwTkk1bG4zNmViT1lQVEl1SEZXVWtNeDlpbXBnNVNzN1NsZkdoL052ZGtZdUI5ZU1vdWNGT0didG0rQnFoOG1FbHJReCtmcC9LMkd0cldBYnVDRG41SldyT0hNMSs0ZFNYeC92cjRUdENOcWZPSHkyZWtINVFSb25wUnFucE9LaExIRVRpSUtvV3grUDlkYjgzK2JWbWVLeE9Ic2s2Y1J5OENWUVp4MG9qMXZFNngyWWROL25OWTNmY1JvNWtoVWNUZHBmMjFIQXU1eDNKdVdlTzNUSXNaalJyMWppVTBaZjU0dWppR1M4K215bU92V1dZTmhvM1J4eks2TlRrY1Npalg5UEdvWXl1VFJpSE1ubzNWUnpLV0lCSjRsREdNc3gwS2F1TUhwMC9Ec3VnaTNHR0w5NkduenBSUnIvR3poeTdkNUI3cW1BeFJzVlI4dFFKL1RyOXVaV0RUNTI0UzZOMzllOEVvMW5pSUJJSGtUaUlUbzlqb21jbGFNZW9tV09LWnlWb3g5akR5dG1mbGFBZDlmOW5INXJsaEpSSUhFVGlJQklIa1RpSXhFRWtEaUp4RUltRFNCeEU0aUFTQjVFNGlNUkJKQTRpY1JDSmcwZ2NST0lnRWdlUk9JakVRU1FPSW5FUWlZTklIRVRpSUJJSGtUaUl4RUVrRGlKeEVJbURTQnhFNGlBU0I1RTRpTVJCSkE0aWNSQ0pnMGdjUk9JZytnKzM4RW1pUlliSmhnQUFBQUJKUlU1RXJrSmdnZz09IiwKICAgICAgInNpemVzIjogIjE4MHgxODAiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9Cg==">
+<script>
+if ('serviceWorker' in navigator) {
+  const swCode = "self.addEventListener('install',e=>{self.skipWaiting();});self.addEventListener('activate',e=>{self.clients.claim();});self.addEventListener('fetch',e=>{});";
+  const blob = new Blob([swCode], {type: 'application/javascript'});
+  navigator.serviceWorker.register(URL.createObjectURL(blob)).catch(()=>{});
+}
+</script>
+<style>
+  :root{
+    --ink:#0E1A2B;
+    --panel:#16263D;
+    --panel-2:#1C2E48;
+    --line:#2A3B54;
+    --paper:#EDEFF3;
+    --muted:#8CA0BC;
+    --gold:#D4A94E;
+    --gold-dim:#6E5B2E;
+    --steel:#5C8AAE;
+    --steel-dim:#2E4356;
+    --slate:#5A6E88;
+    --mono: ui-monospace, 'SF Mono', 'JetBrains Mono', 'Cascadia Code', Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:var(--sans);
+    padding:32px 20px 60px;
+  }
+  .wrap{max-width:840px;margin:0 auto;}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:2.5px;
+    color:var(--gold);
+    text-transform:uppercase;
+    margin:0 0 8px;
+  }
+  h1{
+    font-family:var(--mono);
+    font-weight:600;
+    font-size:28px;
+    margin:0 0 6px;
+    letter-spacing:-0.5px;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:14px;
+    margin:0 0 28px;
+    max-width:520px;
+    line-height:1.5;
+  }
+
+  /* ticker strip */
+  .ticker-outer{
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    overflow-x:auto;
+    white-space:nowrap;
+    padding:10px 0;
+    margin-bottom:28px;
+    scrollbar-width:thin;
+  }
+  .ticker-outer::-webkit-scrollbar{height:4px;}
+  .ticker-outer::-webkit-scrollbar-thumb{background:var(--line);}
+  .ticker-item{
+    display:inline-block;
+    font-family:var(--mono);
+    font-size:12px;
+    color:var(--muted);
+    padding:0 18px;
+    border-right:1px solid var(--line);
+  }
+  .ticker-item:last-child{border-right:none;}
+  .ticker-item b{color:var(--paper);font-weight:600;}
+  .dot-h{color:var(--gold);}
+  .dot-m{color:var(--steel);}
+
+  /* countdown card */
+  .countdown{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-left:3px solid var(--gold);
+    border-radius:4px;
+    padding:18px 22px;
+    margin-bottom:28px;
+    flex-wrap:wrap;
+    gap:12px;
+  }
+  .countdown .label{
+    font-size:11px;
+    letter-spacing:1.5px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:4px;
+    font-family:var(--mono);
+  }
+  .countdown .event{
+    font-size:16px;
+    font-weight:600;
+  }
+  .countdown .clock{
+    font-family:var(--mono);
+    font-size:26px;
+    font-weight:600;
+    color:var(--gold);
+    text-align:right;
+  }
+  .countdown .clock span{
+    font-size:11px;
+    color:var(--muted);
+    font-weight:400;
+    display:block;
+    letter-spacing:1px;
+  }
+
+  /* filters */
+  .filters{
+    display:flex;
+    gap:8px;
+    margin-bottom:22px;
+    flex-wrap:wrap;
+  }
+  .filter-btn{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:0.5px;
+    background:transparent;
+    color:var(--muted);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:6px 14px;
+    cursor:pointer;
+    transition:all .15s ease;
+  }
+  .filter-btn:hover{border-color:var(--steel);color:var(--paper);}
+  .filter-btn.active{
+    background:var(--gold);
+    border-color:var(--gold);
+    color:#2A1F08;
+    font-weight:600;
+  }
+
+  /* legend */
+  .legend{
+    display:flex;
+    gap:18px;
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:20px;
+    font-family:var(--mono);
+    flex-wrap:wrap;
+  }
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .swatch{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+  /* event list */
+  .month-label{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--steel);
+    text-transform:uppercase;
+    margin:26px 0 10px;
+    padding-bottom:6px;
+    border-bottom:1px solid var(--line);
+  }
+  .card{
+    display:grid;
+    grid-template-columns:78px 1fr auto;
+    gap:16px;
+    align-items:start;
+    padding:14px 4px;
+    border-bottom:1px solid var(--line);
+    transition:background .15s ease;
+  }
+  .card:hover{background:var(--panel-2);}
+  .card.past{opacity:0.55;}
+  .date-col{
+    font-family:var(--mono);
+    font-size:13px;
+    color:var(--paper);
+    line-height:1.3;
+    padding-top:2px;
+  }
+  .date-col .wk{color:var(--muted);font-size:11px;display:block;}
+  .body-col .title-row{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:4px;
+    flex-wrap:wrap;
+  }
+  .body-col .title{font-weight:600;font-size:14.5px;}
+  .impact-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .impact-dot.high{background:var(--gold);}
+  .impact-dot.medium{background:var(--steel);}
+  .impact-dot.low{background:var(--slate);}
+  .badge{
+    font-family:var(--mono);
+    font-size:10px;
+    letter-spacing:0.5px;
+    padding:2px 7px;
+    border-radius:3px;
+    text-transform:uppercase;
+  }
+  .badge.labor{background:var(--gold-dim);color:var(--gold);}
+  .badge.inflation{background:var(--steel-dim);color:var(--steel);}
+  .badge.fed{background:#3A2A4E;color:#B99BE0;}
+  .badge.growth{background:#264432;color:#7FC89A;}
+  .note{color:var(--muted);font-size:13px;line-height:1.5;}
+  .result{
+    font-family:var(--mono);
+    font-size:12.5px;
+    color:var(--gold);
+    margin-top:6px;
+  }
+  .status-col{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    text-align:right;
+    white-space:nowrap;
+    padding-top:3px;
+  }
+  .status-col.released{color:var(--gold);}
+
+  footer{
+    margin-top:36px;
+    padding-top:16px;
+    border-top:1px solid var(--line);
+    font-size:11px;
+    color:var(--muted);
+    line-height:1.6;
+  }
+  @media (max-width:520px){
+    .card{grid-template-columns:60px 1fr;}
+    .status-col{grid-column:1 / -1;text-align:left;padding-top:0;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <p class="eyebrow">Macro / rates desk</p>
+  <h1>Economic Calendar</h1>
+  <p class="sub">Release dates for the data that moves the front end and the curve — jobs, inflation, growth, and Fed policy. Updates automatically as dates pass.</p>
+
+  <div class="ticker-outer" id="ticker"></div>
+
+  <div class="countdown">
+    <div>
+      <div class="label">Next release</div>
+      <div class="event" id="next-event-name">—</div>
+    </div>
+    <div class="clock" id="next-event-clock">—<span id="next-event-date"></span></div>
+  </div>
+
+  <div class="filters" id="filters"></div>
+
+  <div class="legend">
+    <span><span class="swatch" style="background:var(--gold)"></span>High impact</span>
+    <span><span class="swatch" style="background:var(--steel)"></span>Medium impact</span>
+    <span><span class="swatch" style="background:var(--slate)"></span>Lower impact</span>
+  </div>
+
+  <div id="list"></div>
+
+  <footer>
+    Sources: Bureau of Labor Statistics (jobs, CPI, PPI), Bureau of Economic Analysis (GDP, PCE), Census Bureau (retail sales, industrial production), Federal Reserve (FOMC). PCE release date for August data is confirmed closer to month-end by the BEA and isn't listed until finalized. Dates are as scheduled and can shift.
+  </footer>
+
+</div>
+
+<script>
+const events = [
+  {
+    date: "2026-08-07",
+    label: "Employment Situation (July)",
+    category: "labor",
+    impact: "high",
+    released: true,
+    result: "Nonfarm payrolls -23K (vs +80K exp) · Unemployment 4.1% · Wages +3.2% YoY",
+    note: "Payrolls fell outright and May/June were revised down a combined 103K. Weaker labor market than the earlier prints suggested."
+  },
+  {
+    date: "2026-08-12",
+    label: "CPI (July)",
+    category: "inflation",
+    impact: "high",
+    released: false,
+    note: "First major inflation read since the jobs miss. A soft print firms up the case for a September cut."
+  },
+  {
+    date: "2026-08-14",
+    label: "PPI (July) + Initial Jobless Claims",
+    category: "inflation",
+    impact: "medium",
+    released: false,
+    note: "Producer prices — upstream signal for where CPI/PCE head next."
+  },
+  {
+    date: "2026-08-15",
+    label: "Retail Sales (July) + Industrial Production",
+    category: "growth",
+    impact: "medium",
+    released: false,
+    note: "Consumer demand check. Watch for confirmation of a slowing but not collapsing consumer."
+  },
+  {
+    date: "2026-08-19",
+    label: "FOMC Minutes (Jul 28–29 meeting)",
+    category: "fed",
+    impact: "medium",
+    released: false,
+    note: "Read for how divided the committee was heading into a weak jobs print."
+  },
+  {
+    date: "2026-08-26",
+    label: "GDP, Second Estimate (Q2)",
+    category: "growth",
+    impact: "medium",
+    released: false,
+    note: "Revision to the advance Q2 growth estimate."
+  },
+  {
+    date: "2026-09-04",
+    label: "Employment Situation (August)",
+    category: "labor",
+    impact: "high",
+    released: false,
+    note: "Last jobs report before the September FOMC meeting — heavily weighted for the rate decision."
+  },
+  {
+    date: "2026-09-16",
+    label: "FOMC Meeting + Press Conference",
+    category: "fed",
+    impact: "high",
+    released: false,
+    note: "Two-day meeting Sept 15–16. Rate decision, Summary of Economic Projections, and Powell press conference."
+  },
+  {
+    date: "2026-10-02",
+    label: "Employment Situation (September)",
+    category: "labor",
+    impact: "high",
+    released: false,
+    note: "Next monthly payrolls print."
+  },
+  {
+    date: "2026-10-14",
+    label: "CPI (September)",
+    category: "inflation",
+    impact: "high",
+    released: false,
+    note: "Mid-October inflation read."
+  },
+  {
+    date: "2026-10-28",
+    label: "FOMC Meeting",
+    category: "fed",
+    impact: "high",
+    released: false,
+    note: "Two-day meeting Oct 27–28."
+  }
+];
+
+const categoryLabels = { labor: "Labor", inflation: "Inflation", fed: "Fed", growth: "Growth" };
+const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const wkNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+function parseDate(s){
+  const [y,m,d] = s.split("-").map(Number);
+  return new Date(y, m-1, d);
+}
+function fmtShort(dt){
+  return monthNames[dt.getMonth()].slice(0,3).toUpperCase() + " " + dt.getDate();
+}
+
+const now = new Date();
+
+function render(filter){
+  const tickerEl = document.getElementById("ticker");
+  const listEl = document.getElementById("list");
+  tickerEl.innerHTML = "";
+  listEl.innerHTML = "";
+
+  const upcoming = events.filter(e => !e.released || parseDate(e.date) >= new Date(now.getFullYear(), now.getMonth(), now.getDate()));
+  upcoming.forEach(e => {
+    const dt = parseDate(e.date);
+    const item = document.createElement("span");
+    item.className = "ticker-item";
+    const dotClass = e.impact === "high" ? "dot-h" : "dot-m";
+    item.innerHTML = `<b>${fmtShort(dt)}</b> · ${e.label.split("(")[0].trim()} · <span class="${dotClass}">${e.impact}</span>`;
+    tickerEl.appendChild(item);
+  });
+
+  const filtered = filter === "all" ? events : events.filter(e => e.category === filter);
+  let lastMonth = null;
+  filtered.forEach(e => {
+    const dt = parseDate(e.date);
+    const monthKey = monthNames[dt.getMonth()] + " " + dt.getFullYear();
+    if(monthKey !== lastMonth){
+      const m = document.createElement("div");
+      m.className = "month-label";
+      m.textContent = monthKey;
+      listEl.appendChild(m);
+      lastMonth = monthKey;
+    }
+    const isPast = e.released;
+    const card = document.createElement("div");
+    card.className = "card" + (isPast ? " past" : "");
+    card.innerHTML = `
+      <div class="date-col">${fmtShort(dt)}<span class="wk">${wkNames[dt.getDay()]}</span></div>
+      <div class="body-col">
+        <div class="title-row">
+          <span class="impact-dot ${e.impact}"></span>
+          <span class="title">${e.label}</span>
+          <span class="badge ${e.category}">${categoryLabels[e.category]}</span>
+        </div>
+        <div class="note">${e.note}</div>
+        ${e.result ? `<div class="result">${e.result}</div>` : ""}
+      </div>
+      <div class="status-col ${isPast ? "released" : ""}">${isPast ? "Released" : "Upcoming"}</div>
+    `;
+    listEl.appendChild(card);
+  });
+}
+
+function renderFilters(){
+  const filtersEl = document.getElementById("filters");
+  const cats = ["all","labor","inflation","fed","growth"];
+  let active = "all";
+  cats.forEach(c => {
+    const btn = document.createElement("button");
+    btn.className = "filter-btn" + (c === "all" ? " active" : "");
+    btn.textContent = c === "all" ? "All" : categoryLabels[c];
+    btn.onclick = () => {
+      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      render(c);
+    };
+    filtersEl.appendChild(btn);
+  });
+}
+
+function updateCountdown(){
+  const upcoming = events
+    .filter(e => !e.released)
+    .map(e => ({...e, dt: parseDate(e.date)}))
+    .filter(e => e.dt >= new Date(now.getFullYear(), now.getMonth(), now.getDate()))
+    .sort((a,b) => a.dt - b.dt);
+  if(upcoming.length === 0) return;
+  const next = upcoming[0];
+  const diffMs = next.dt - now;
+  const days = Math.max(0, Math.floor(diffMs / (1000*60*60*24)));
+  document.getElementById("next-event-name").textContent = next.label;
+  document.getElementById("next-event-clock").childNodes[0].textContent = days === 0 ? "Today" : (days + "d");
+  document.getElementById("next-event-date").textContent = fmtShort(next.dt).toUpperCase();
+}
+
+renderFilters();
+render("all");
+updateCountdown();
+</script>
+</body>
+</html>
