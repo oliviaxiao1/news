@@ -259,6 +259,123 @@ if ('serviceWorker' in navigator) {
     .card{grid-template-columns:60px 1fr;}
     .status-col{grid-column:1 / -1;text-align:left;padding-top:0;}
   }
+
+  /* tabs */
+  .tabs{
+    display:flex;
+    gap:4px;
+    margin-bottom:26px;
+    border-bottom:1px solid var(--line);
+  }
+  .tab-btn{
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:0.5px;
+    background:transparent;
+    color:var(--muted);
+    border:none;
+    border-bottom:2px solid transparent;
+    padding:10px 4px;
+    margin-right:22px;
+    cursor:pointer;
+    text-transform:uppercase;
+  }
+  .tab-btn:hover{color:var(--paper);}
+  .tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+
+  /* market snapshot */
+  .asof{
+    font-family:var(--mono);
+    font-size:11px;
+    color:var(--muted);
+    margin-bottom:22px;
+    letter-spacing:0.5px;
+  }
+  .asof b{color:var(--paper);}
+  .tile-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(150px, 1fr));
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:30px;
+  }
+  .tile{
+    background:var(--panel);
+    padding:14px 16px;
+  }
+  .tile .t-label{
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:8px;
+  }
+  .tile .t-value{
+    font-family:var(--mono);
+    font-size:19px;
+    font-weight:600;
+    color:var(--paper);
+    margin-bottom:4px;
+  }
+  .tile .t-change{
+    font-family:var(--mono);
+    font-size:12px;
+  }
+  .up{color:#7FC89A;}
+  .down{color:#E8917C;}
+
+  .section-title{
+    font-family:var(--mono);
+    font-size:12px;
+    letter-spacing:2px;
+    color:var(--steel);
+    text-transform:uppercase;
+    margin:0 0 14px;
+  }
+  .chart-card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:4px;
+    padding:20px 20px 8px;
+    margin-bottom:30px;
+  }
+  .chart-note{
+    font-size:11.5px;
+    color:var(--muted);
+    margin:10px 0 4px;
+    line-height:1.5;
+  }
+
+  .learn-card{
+    border:1px solid var(--line);
+    border-left:3px solid var(--steel);
+    border-radius:4px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    background:var(--panel);
+  }
+  .learn-card h3{
+    font-size:14.5px;
+    margin:0 0 8px;
+    color:var(--paper);
+    font-weight:600;
+  }
+  .learn-card p{
+    font-size:13.5px;
+    color:var(--muted);
+    line-height:1.65;
+    margin:0;
+  }
+  .learn-card .term{
+    font-family:var(--mono);
+    color:var(--gold);
+    font-size:11.5px;
+    background:var(--gold-dim);
+    padding:1px 6px;
+    border-radius:3px;
+  }
 </style>
 </head>
 <body>
@@ -266,34 +383,69 @@ if ('serviceWorker' in navigator) {
 
   <p class="eyebrow">Macro / rates desk</p>
   <h1>Economic Calendar</h1>
-  <p class="sub">Release dates for the data that moves the front end and the curve — jobs, inflation, growth, and Fed policy. Updates automatically as dates pass.</p>
+  <p class="sub">Release dates for the data that moves the front end and the curve, plus a market snapshot to build intuition for how it all connects.</p>
 
-  <div class="ticker-outer" id="ticker"></div>
+  <div class="tabs">
+    <button class="tab-btn active" data-tab="calendar">Calendar</button>
+    <button class="tab-btn" data-tab="market">Market snapshot</button>
+  </div>
 
-  <div class="countdown">
-    <div>
-      <div class="label">Next release</div>
-      <div class="event" id="next-event-name">—</div>
+  <div id="view-calendar">
+
+    <div class="ticker-outer" id="ticker"></div>
+
+    <div class="countdown">
+      <div>
+        <div class="label">Next release</div>
+        <div class="event" id="next-event-name">—</div>
+      </div>
+      <div class="clock" id="next-event-clock">—<span id="next-event-date"></span></div>
     </div>
-    <div class="clock" id="next-event-clock">—<span id="next-event-date"></span></div>
+
+    <div class="filters" id="filters"></div>
+
+    <div class="legend">
+      <span><span class="swatch" style="background:var(--gold)"></span>High impact</span>
+      <span><span class="swatch" style="background:var(--steel)"></span>Medium impact</span>
+      <span><span class="swatch" style="background:var(--slate)"></span>Lower impact</span>
+    </div>
+
+    <div id="list"></div>
+
   </div>
 
-  <div class="filters" id="filters"></div>
+  <div id="view-market" style="display:none">
 
-  <div class="legend">
-    <span><span class="swatch" style="background:var(--gold)"></span>High impact</span>
-    <span><span class="swatch" style="background:var(--steel)"></span>Medium impact</span>
-    <span><span class="swatch" style="background:var(--slate)"></span>Lower impact</span>
+    <p class="asof">Snapshot as of <b>Friday, August 7, 2026 close</b> — the last full trading session. Ask Claude to refresh these figures whenever you want an updated snapshot; this page doesn't pull live data on its own.</p>
+
+    <p class="section-title">Equities</p>
+    <div class="tile-grid" id="equity-tiles"></div>
+
+    <p class="section-title">Treasury yield curve</p>
+    <div class="chart-card">
+      <canvas id="yieldChart" height="90"></canvas>
+      <p class="chart-note">The 2s10s spread (10-year minus 2-year) sits around <b style="color:var(--gold)">+40bp</b> — positive and upward-sloping, which is the normal shape. An inverted curve (short rates above long rates) is the classic recession signal; this one isn't inverted.</p>
+    </div>
+
+    <p class="section-title">Commodities &amp; dollar</p>
+    <div class="tile-grid" id="commodity-tiles"></div>
+
+    <p class="section-title">What moved, and why</p>
+    <div id="learn-cards"></div>
+
+    <footer style="margin-top:8px;">
+      Equity and commodity levels from Friday's close per major financial newswires; Treasury yields per the Treasury Department / FRED daily series. Figures are a point-in-time snapshot, not a live feed — refresh by asking Claude to pull the latest.
+    </footer>
+
   </div>
 
-  <div id="list"></div>
-
-  <footer>
+  <footer id="calendar-footer">
     Sources: Bureau of Labor Statistics (jobs, CPI, PPI), Bureau of Economic Analysis (GDP, PCE), Census Bureau (retail sales, industrial production), Federal Reserve (FOMC). PCE release date for August data is confirmed closer to month-end by the BEA and isn't listed until finalized. Dates are as scheduled and can shift.
   </footer>
 
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script>
 <script>
 const events = [
   {
@@ -484,6 +636,125 @@ function updateCountdown(){
 renderFilters();
 render("all");
 updateCountdown();
+
+/* ---------- tabs ---------- */
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    const tab = btn.dataset.tab;
+    document.getElementById("view-calendar").style.display = tab === "calendar" ? "" : "none";
+    document.getElementById("view-market").style.display = tab === "market" ? "" : "none";
+    document.getElementById("calendar-footer").style.display = tab === "calendar" ? "" : "none";
+  });
+});
+
+/* ---------- market snapshot data ---------- */
+const equities = [
+  { label: "S&P 500", value: "7,757.64", day: "+0.62%", week: "+3.6% week" },
+  { label: "Nasdaq Composite", value: "26,690.62", day: "+1.30%", week: "+5.2% week" },
+  { label: "Dow Jones", value: "54,036.93", day: "+0.28%", week: "+3.0% week" },
+  { label: "Russell 2000", value: "3,034.00", day: "+1.10%", week: "small caps" }
+];
+
+const commodities = [
+  { label: "WTI crude", value: "$78.18", day: "+1.15%" },
+  { label: "Brent crude", value: "$83.55", day: "+1.29%" },
+  { label: "Gold", value: "$4,399.70", day: "+2.33%", week: "+7% week" },
+  { label: "Silver", value: "$63.50", day: "+3.07%", week: "+10% week" },
+  { label: "Dollar index (DXY)", value: "99.56", day: "-0.37%" }
+];
+
+function tileHTML(item){
+  const isUp = item.day.startsWith("+");
+  return `
+    <div class="tile">
+      <div class="t-label">${item.label}</div>
+      <div class="t-value">${item.value}</div>
+      <div class="t-change ${isUp ? "up" : "down"}">${item.day}${item.week ? " · " + item.week : ""}</div>
+    </div>
+  `;
+}
+
+document.getElementById("equity-tiles").innerHTML = equities.map(tileHTML).join("");
+document.getElementById("commodity-tiles").innerHTML = commodities.map(tileHTML).join("");
+
+/* ---------- learn cards ---------- */
+const learnCards = [
+  {
+    term: "Rates ↓ / Stocks ↑",
+    title: "Why did stocks rally on a weak jobs report?",
+    body: "This is the classic \"bad news is good news\" dynamic. A soft labor market lowers the odds the Fed needs to raise rates to cool the economy, and lower expected rates mean a lower discount rate applied to future corporate earnings — which mechanically supports higher equity valuations, especially for longer-duration growth names like tech."
+  },
+  {
+    term: "2s10s = +40bp",
+    title: "What the yield curve shape is telling you",
+    body: "The curve here is positively sloped: longer maturities yield more than shorter ones, which is the normal, healthy shape. The 2s10s spread — 10-year yield minus 2-year yield — is a widely watched recession gauge. It went negative (inverted) for much of 2022–2024; a positive spread like the current one is not itself a warning sign."
+  },
+  {
+    term: "Duration & price",
+    title: "Why bonds gained value on Friday",
+    body: "Bond prices move inversely to yields, and the size of the move scales with duration. Friday's yield declines meant anyone holding longer-dated Treasuries, especially the 10- and 30-year, saw a real (if modest) price gain on top of the coupon they were already earning."
+  },
+  {
+    term: "Real yields ↓",
+    title: "Why gold and silver jumped",
+    body: "Gold and silver pay no yield, so they compete directly with Treasuries for investor capital. When yields fall and the dollar weakens (the DXY dropped alongside yields Friday), the opportunity cost of holding metals falls too, which tends to pull money in. Ongoing Middle East tensions add a safe-haven bid on top of that."
+  },
+  {
+    term: "Supply risk",
+    title: "What's driving oil right now",
+    body: "Oil has been trading on geopolitical headlines more than on the jobs data itself, specifically shipping and supply risk tied to the Strait of Hormuz. That's a useful reminder that not every asset in a snapshot like this moves for the same reason on the same day."
+  }
+];
+
+document.getElementById("learn-cards").innerHTML = learnCards.map(c => `
+  <div class="learn-card">
+    <span class="term">${c.term}</span>
+    <h3 style="margin-top:8px;">${c.title}</h3>
+    <p>${c.body}</p>
+  </div>
+`).join("");
+
+/* ---------- yield curve chart ---------- */
+window.addEventListener("load", () => {
+  const ctx = document.getElementById("yieldChart");
+  if(!ctx || typeof Chart === "undefined") return;
+  new Chart(ctx, {
+    type: "line",
+    data: {
+      labels: ["3M", "2Y", "5Y", "10Y", "30Y"],
+      datasets: [{
+        label: "Yield %",
+        data: [3.80, 4.20, 4.36, 4.60, 5.20],
+        borderColor: "#D4A94E",
+        backgroundColor: "rgba(212,169,78,0.08)",
+        pointBackgroundColor: "#EDEFF3",
+        pointBorderColor: "#D4A94E",
+        pointRadius: 4,
+        borderWidth: 2,
+        fill: true,
+        tension: 0.25
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: {
+          min: 3.5,
+          max: 5.5,
+          ticks: { color: "#8CA0BC", font: { family: "ui-monospace", size: 11 }, callback: v => v + "%" },
+          grid: { color: "#2A3B54" }
+        },
+        x: {
+          ticks: { color: "#8CA0BC", font: { family: "ui-monospace", size: 11 } },
+          grid: { color: "#2A3B54" }
+        }
+      }
+    }
+  });
+});
 </script>
 </body>
 </html>
